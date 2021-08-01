@@ -24,6 +24,7 @@ public:
 
     auto SetScene(SceneLabel) -> void;
 
+    auto HandleEvent(Event &) -> void;
     auto Update(Timestep) -> void;
     auto Render() -> void;
 };

@@ -13,6 +13,8 @@ public:
     ShaderUniformLocation mViewLoc{};
     ShaderUniformLocation mProjLoc{};
 
+    ShaderUniformLocation mReverseModelLoc{};
+
     ShaderUniformLocation mCameraPositionLoc{};
     ShaderUniformLocation mPlanetLoc{};
 

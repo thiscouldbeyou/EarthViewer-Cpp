@@ -1,11 +1,12 @@
 #version 410 core
 
+in vec3 vNormalizedCoord_FS_in;
 in vec3 vWorldNormalizedCoord_FS_in;
 in vec3 vWorldTransformedCoord_FS_in;
 
 out vec4 FragColor;
 
-uniform vec3 uSunDirection = vec3(-1, -1, -1);
+uniform vec3 uSunDirection = vec3(0, 0, -1);
 
 float hash( float n )
 {
@@ -75,6 +76,6 @@ void main() {
     fact = clamp(fact, 0.1, 1);
 
     //vec3 shading = GenerateTextureCoords(uBumpSampler2, vWorldTransformedCoord_FS_in, 1).xyz;
-    float s = Noise3FMB(vWorldNormalizedCoord_FS_in);
+    float s = Noise3FMB(vNormalizedCoord_FS_in);
     FragColor = fact * vec4(vec3(s), 1) * vec4(0.2, 0.7, 0.4, 1);
 }

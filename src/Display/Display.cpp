@@ -1,18 +1,22 @@
 #include "Display.hpp"
 
 #include "EarthViewer.hpp"
+#include "Events/Event.hpp"
 
-std::shared_ptr<Display> DisplayManager::sDisplay {};
+std::shared_ptr<Display> DisplayManager::sDisplay{};
+EventHandlerFn DisplayManager::sEventHandler{};
 
-auto DisplayManager::ResizeCallback(GLFWwindow *window, int width, int height) -> void
+auto DisplayManager::HandleEvent(Event &event) -> void
 {
-    printf("Screen Resize Event: [%d, %d]\n", width, height);
-    glViewport(0, 0, width, height);
-}
-
-auto DisplayManager::AttachCallbacks(GLFWwindow *window) -> void
-{
-    glfwSetWindowSizeCallback(window, DisplayManager::ResizeCallback);
+    EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<WindowResizeEvent>(
+        [&](WindowResizeEvent &event) -> bool
+        {
+            printf("Screen Resize Event: [%d, %d]\n", event.mWidth, event.mHeight);
+            glViewport(0, 0, event.mWidth, event.mHeight);
+            return false;
+        });
+    sEventHandler(event);
 }
 
 auto DisplayManager::MakeDisplay(int width, int height, const std::string &title) -> Ref<Display>
@@ -42,9 +46,14 @@ auto DisplayManager::MakeDisplay(int width, int height, const std::string &title
     return sDisplay;
 }
 
-auto DisplayManager::GetDisplay(int id) -> Display&
+auto DisplayManager::GetDisplay(int id) -> Display &
 {
     return *sDisplay.get();
+}
+
+auto DisplayManager::SetEventHandler(EventHandlerFn func) -> void
+{
+    sEventHandler = func;
 }
 
 auto Display::Clear() -> void
@@ -83,4 +92,10 @@ auto Display::GetSize() const -> DisplaySize
     DisplaySize res;
     glfwGetWindowSize(mWindow, &res.mWidth, &res.mHeight);
     return res;
+}
+
+auto Display::GetAspectRatio() const -> float
+{
+    DisplaySize size = GetSize();
+    return (float) size.mWidth / (float) size.mHeight;
 }

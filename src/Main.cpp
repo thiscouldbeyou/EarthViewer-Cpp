@@ -2,18 +2,26 @@
 
 #include "EarthViewer.hpp"
 
+/*
+	- Maintence
+	- Textures
+	- Frame Buffers
+	- Normals
+	- Skybox
+*/
+
 auto main() -> int
 {
 	GLFWLoader::Initialize();
 	Ref<Display> display = DisplayManager::MakeDisplay(720, 480, "EarthViewer");
 
 	GLEWLoader::Initialize();
-	GLint MaxPatchVertices = 0;
-	glGetIntegerv(GL_MAX_PATCH_VERTICES, &MaxPatchVertices);
-	printf("Max # of patches: %d\n", MaxPatchVertices);
-	glPatchParameteri(GL_PATCH_VERTICES, 4);
+	GLEWLoader::SetPatchVertices(4);
 
 	EarthViewer game;
+	DisplayManager::SetEventHandler([&game](Event &event) -> void {
+		game.HandleEvent(event);
+	});
 	double previous = glfwGetTime();
 	while (!display->ShouldClose())
 	{

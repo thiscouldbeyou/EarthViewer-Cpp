@@ -2,23 +2,21 @@
 
 layout (vertices = 4) out;
 
-
-uniform vec3 uCameraPosition = vec3(0,1.5,0);
-
 in vec3 vWorldPosition_CS_in[];
 
 out vec3 vWorldPosition_ES_in[];
 
+uniform vec3 uCameraPosition = vec3(0,1.5,0);
+
 float GetOuterTess(float src) {
-    float A = 1;
-    float B = 1;
-    float C = 0;
-    float S = 2;
-    return S / (A * src * src + B * src + C);
+    float altitude = length(uCameraPosition) - 1;
+    float A = 1.0;
+    float S = 2.0;
+    return S / (A * altitude * altitude);
 }
 
 float GetInnerTess(float src) {
-    float A = 1;
+    float A = 0;
     float B = 1;
     float C = 0;
     float S = 3;
@@ -37,20 +35,20 @@ void main() {
         return;  
     } 
 
-    vec3 transformedPosition0 = vWorldPosition_ES_in[0];
-    vec3 transformedPosition1 = vWorldPosition_ES_in[1];
-    vec3 transformedPosition2 = vWorldPosition_ES_in[2];
-    vec3 transformedPosition3 = vWorldPosition_ES_in[3];
+    vec3 transformedPosition0 = npos;
+    vec3 transformedPosition1 = npos;
+    vec3 transformedPosition2 = npos;
+    vec3 transformedPosition3 = npos;
 
     float distFromCamera0 = distance(uCameraPosition, transformedPosition0);
     float distFromCamera1 = distance(uCameraPosition, transformedPosition1);
     float distFromCamera2 = distance(uCameraPosition, transformedPosition2);
     float distFromCamera3 = distance(uCameraPosition, transformedPosition3);
 
-    float maxEdge0 = (distFromCamera0 + distFromCamera1) / 2;
-    float maxEdge1 = (distFromCamera0 + distFromCamera3) / 2;
-    float maxEdge2 = (distFromCamera2 + distFromCamera3) / 2;
-    float maxEdge3 = (distFromCamera1 + distFromCamera2) / 2;
+    float maxEdge0 = (distFromCamera0 + distFromCamera1) / 2.0;
+    float maxEdge1 = (distFromCamera0 + distFromCamera3) / 2.0;
+    float maxEdge2 = (distFromCamera2 + distFromCamera3) / 2.0;
+    float maxEdge3 = (distFromCamera1 + distFromCamera2) / 2.0;
 
     float edgeTess0 = GetOuterTess(maxEdge0);
     float edgeTess1 = GetOuterTess(maxEdge1);

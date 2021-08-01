@@ -51,6 +51,15 @@ auto GLEWLoader::Initialize() -> bool
     return true;
 }
 
+auto GLEWLoader::SetPatchVertices(int count) -> void
+{
+    int MaxPatchVertices = 0;
+	glGetIntegerv(GL_MAX_PATCH_VERTICES, &MaxPatchVertices);
+	printf("Max number of patch vertices: %d\n", MaxPatchVertices);
+	glPatchParameteri(GL_PATCH_VERTICES, count);
+    printf("Set number of patch vertices: %d\n", count);
+}
+
 auto TextFileLoader::LoadFile(const std::string &filepath) -> const std::string
 {
     auto file = fopen(filepath.c_str(), "rt");

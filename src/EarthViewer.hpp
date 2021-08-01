@@ -4,6 +4,7 @@
 #include "EVSystem.hpp"
 #include "Display/Display.hpp"
 #include "Scene/SceneManager.hpp"
+#include "Events/Event.hpp"
 
 class EarthViewer
 {
@@ -14,6 +15,7 @@ public:
     EarthViewer();
     ~EarthViewer();
 
+    auto HandleEvent(Event &) -> void;
     auto Update(Timestep) -> void;
     auto Render() -> void;
 };

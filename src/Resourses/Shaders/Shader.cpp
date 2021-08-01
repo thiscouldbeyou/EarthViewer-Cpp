@@ -4,15 +4,15 @@ static auto GetShaderExtention(GLenum type)
 {
     static const std::string ext = ".glsl";
     if (type == GL_VERTEX_SHADER)
-        return "/Vertex" + ext;
+        return "/vs" + ext;
     if (type == GL_TESS_CONTROL_SHADER)
-        return "/Control" + ext;
+        return "/cs" + ext;
     if (type == GL_TESS_EVALUATION_SHADER)
-        return "/Evaluation" + ext;
+        return "/es" + ext;
     if (type == GL_GEOMETRY_SHADER)
-        return "/Geometry" + ext;
+        return "/gs" + ext;
     if (type == GL_FRAGMENT_SHADER)
-        return "/Fragment" + ext;
+        return "/fs" + ext;
     return std::string("");
 }
 

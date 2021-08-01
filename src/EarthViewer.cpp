@@ -9,6 +9,11 @@ EarthViewer::~EarthViewer()
 {
 }
 
+auto EarthViewer::HandleEvent(Event &event) -> void
+{
+    mSceneManager.HandleEvent(event);
+}
+
 auto EarthViewer::Update(Timestep Timestep) -> void
 {
     mSceneManager.Update(Timestep);

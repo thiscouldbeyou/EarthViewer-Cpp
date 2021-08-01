@@ -26,6 +26,12 @@ auto SceneManager::SetScene(SceneLabel scene) -> void
     mScenes[(Size)scene]->Attach();
 }
 
+auto SceneManager::HandleEvent(Event &event) -> void
+{
+    assert((Size)mCurrentScene);
+    mScenes[(Size)mCurrentScene]->HandleEvent(event);
+}
+
 auto SceneManager::Update(Timestep timestep) -> void
 {
     assert((Size)mCurrentScene);

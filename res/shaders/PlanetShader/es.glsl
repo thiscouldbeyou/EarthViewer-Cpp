@@ -2,11 +2,13 @@
 
 layout (quads) in;
 
+uniform mat4 uReverse_ModelMatrix = mat4(1.0);
 uniform mat4 uViewMatrix = mat4(1.0);
 uniform mat4 uProjMatrix = mat4(1.0);
 
 in vec3 vWorldPosition_ES_in[];
 
+out vec3 vNormalizedCoord_FS_in;
 out vec3 vWorldNormalizedCoord_FS_in;
 out vec3 vWorldTransformedCoord_FS_in;
 
@@ -66,34 +68,6 @@ vec4 GenerateTextureCoords(sampler2D samp, vec3 pos, float scale) {
     return vec4(tex.xyz, 1);
 }
 
-vec3 GetNoiseLevel(float theta, float phi) {
-    float x = sin(theta) * cos(phi);
-    float y = cos(theta);
-    float z = sin(theta) * sin(phi);
-    vec3 pos = vec3(x,y,z);
-
-    float value = Noise3FMB(pos);
-    return pos * value;
-}
-
-vec3 CalculateNormal(vec3 pos) {
-    vec3 np = normalize(pos);
-    float theta = atan(np.z, np.x);
-    float phi = acos(np.y);
-
-    float delta = 0.001;
-    vec3 nv = GetNoiseLevel(theta, phi - delta);
-    vec3 sv = GetNoiseLevel(theta, phi + delta);
-    vec3 wv = GetNoiseLevel(theta - delta, phi);
-    vec3 ev = GetNoiseLevel(theta + delta, phi);
-
-    vec3 ve = sv - nv;
-    vec3 he = ev - wv;
-
-    vec3 cr = cross(he, ve);
-    return normalize(cr);
-}
-
 vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2)
 {
     return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2;
@@ -119,8 +93,10 @@ void main() {
     //pos = normalize(pos);
     vWorldNormalizedCoord_FS_in = pos;
 
-    float scale = Noise3FMB(pos) * 0.1 + 0.9;
-    vWorldTransformedCoord_FS_in = pos * scale;
+    vec3 orginal_pos = (uReverse_ModelMatrix * vec4(pos, 1)).xyz;
+    float scale = Noise3FMB(orginal_pos) * 0.1 + 0.9;
+    vWorldTransformedCoord_FS_in = orginal_pos * scale;
+    vNormalizedCoord_FS_in = orginal_pos;
 
     vec3 final_transform = int(USE_TRANSFORM) * pos * scale + int(!USE_TRANSFORM) * pos;
     gl_Position = uProjMatrix * uViewMatrix * vec4(final_transform, 1.0);

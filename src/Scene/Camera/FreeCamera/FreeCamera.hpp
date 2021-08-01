@@ -4,23 +4,6 @@
 #include <glm/glm.hpp>
 #include "../Camera.hpp"
 
-struct CameraSettings
-{
-    float mFOV{};
-    float mAspect{};
-    float mNear{};
-    float mFar{};
-
-    CameraSettings() = default;
-    CameraSettings(float fov, float aspect, float near, float far)
-        : mFOV(fov),
-          mAspect(aspect),
-          mNear(near),
-          mFar(far)
-    {
-    }
-};
-
 class FreeCamera : public Camera
 {
 private:

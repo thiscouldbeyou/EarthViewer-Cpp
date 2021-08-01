@@ -37,6 +37,8 @@ PlanetShader::PlanetShader()
     mViewLoc = GetUniformLocation("uViewMatrix");
     mProjLoc = GetUniformLocation("uProjMatrix");
 
+    mReverseModelLoc = GetUniformLocation("uReverse_ModelMatrix");
+
     mCameraPositionLoc = GetUniformLocation("uCameraPosition");
     //mPlanetLoc = GetUniformLocation("uPlanetPosition");
 }

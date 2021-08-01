@@ -5,8 +5,9 @@ build/debug/Scene/SceneManager.o: src/Scene/SceneManager.cpp \
  src/Resourses/Shaders/Implimentations/PlanetShader.hpp \
  src/Resourses/Shaders/Shader.hpp src/Utilities/ResourseLoader.hpp \
  src/Resourses/Textures/Texture.hpp \
- src/Scene/Camera/FreeCamera/FreeCamera.hpp \
- src/Scene/Camera/FreeCamera/../Camera.hpp src/Scene/Scenes/Scene.hpp
+ src/Scene/Camera/OrbitalCamera/OrbitalCamera.hpp \
+ src/Scene/Camera/OrbitalCamera/../Camera.hpp src/Scene/Scenes/Scene.hpp \
+ src/Events/Event.hpp
 
 src/Scene/SceneManager.hpp:
 
@@ -28,8 +29,10 @@ src/Utilities/ResourseLoader.hpp:
 
 src/Resourses/Textures/Texture.hpp:
 
-src/Scene/Camera/FreeCamera/FreeCamera.hpp:
+src/Scene/Camera/OrbitalCamera/OrbitalCamera.hpp:
 
-src/Scene/Camera/FreeCamera/../Camera.hpp:
+src/Scene/Camera/OrbitalCamera/../Camera.hpp:
 
 src/Scene/Scenes/Scene.hpp:
+
+src/Events/Event.hpp:

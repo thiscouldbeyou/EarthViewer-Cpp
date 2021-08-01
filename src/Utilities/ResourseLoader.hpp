@@ -16,6 +16,7 @@ class GLEWLoader
 private:
 public:
     static auto Initialize() -> bool;
+    static auto SetPatchVertices(int count) -> void;
 };
 
 class TextFileLoader

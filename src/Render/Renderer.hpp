@@ -3,14 +3,14 @@
 
 #include "EVSystem.hpp"
 #include "Scene/Planet/Planet.hpp"
-#include "Scene/Camera/FreeCamera/FreeCamera.hpp"
+#include "Scene/Camera/OrbitalCamera/OrbitalCamera.hpp"
 #include "Resourses/Shaders/Implimentations/PlanetShader.hpp"
 
 class Renderer
 {
 private:
 public:
-    auto RenderPlanet(Planet &, Ref<PlanetShader>, FreeCamera) -> void;
+    auto RenderPlanet(Planet &, Ref<PlanetShader>, OrbitalCamera &) -> void;
     auto RenderSkybox() -> void;
     auto RenderUI() -> void;
 };

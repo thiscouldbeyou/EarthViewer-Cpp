@@ -4,7 +4,7 @@
 
 GameScene::GameScene()
     : mPlanet(),
-      mFreeCamera(0, 0, 2, 0, 0, 0, 120, 720.0f / 480.0f, 0.01, 100),
+      mOrbitalCamera(0, 0, 2, 120, DisplayManager::GetDisplay().GetAspectRatio(), 0.01, 100),
       mPlanetShader(std::make_shared<PlanetShader>())
 {
 }
@@ -21,64 +21,41 @@ void GameScene::Detach()
 {
 }
 
+auto GameScene::HandleEvent(Event &event) -> void
+{
+    EventDispatcher dispatcher(event);
+    dispatcher.Dispatch<WindowResizeEvent>(
+        [&](WindowResizeEvent &event)
+        {
+            CameraSettings set = mOrbitalCamera.GetCameraSettings();
+            float ratio = (float)event.mWidth / (float)event.mHeight;
+            mOrbitalCamera.SetCameraSettings(set.mFOV, ratio, set.mNear, set.mFar);
+            mOrbitalCamera.UpdateProjMatrix();
+            return false;
+        });
+    dispatcher.Dispatch<ScrollEvent>(
+        [&](ScrollEvent &event)
+        {
+            mOrbitalCamera.ChangePhysicalAcceleration(-event.mOffsetY * 2, 0, 0);
+            return false;
+        });
+    dispatcher.Dispatch<CursorMovedEvent>(
+        [&](CursorMovedEvent &event)
+        {
+            GLFWwindow *window = DisplayManager::GetDisplay().GetWindowHandle();
+            if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+                mOrbitalCamera.ChangePhysicalAcceleration(0, -event.mPosDy, event.mPosDx);
+            return false;
+        });
+}
+
 void GameScene::Update(Timestep timestep)
 {
-    Display &display = DisplayManager::GetDisplay();
-    GLFWwindow *win = display.GetWindowHandle();
     mPlanet.Update(timestep);
-
-    float speed = 0.5;
-    if(glfwGetKey(win, GLFW_KEY_LEFT_CONTROL))
-    {
-        speed *= 10;
-    }
-
-    if (glfwGetKey(win, GLFW_KEY_W))
-    {
-        mFreeCamera.Move(0, 0, speed * timestep);
-    }
-    if (glfwGetKey(win, GLFW_KEY_S))
-    {
-        mFreeCamera.Move(0, 0, -speed * timestep);
-    }
-    if (glfwGetKey(win, GLFW_KEY_A))
-    {
-        mFreeCamera.Move(speed * timestep, 0, 0);
-    }
-    if (glfwGetKey(win, GLFW_KEY_D))
-    {
-        mFreeCamera.Move(-speed * timestep, 0, 0);
-    }
-    if (glfwGetKey(win, GLFW_KEY_SPACE))
-    {
-        mFreeCamera.Move(0, speed * timestep, 0);
-    }
-    if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT))
-    {
-        mFreeCamera.Move(0, -speed * timestep, 0);
-    }
-
-    static double x, y;
-    static double ox, oy;
-    static double dx, dy;
-    glfwGetCursorPos(win, &x, &y);
-    dx = x - ox;
-    dy = y - oy;
-    ox = x;
-    oy = y;
-    x = 0;
-    y = 0;
-    if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-    {
-        float speed = 5;
-        float scale = speed * timestep;
-        mFreeCamera.Rotate(dy * scale, dx * scale, 0);
-    }
-
-    //mFreeCamera.Rotate(0, 0.1 * timestep, 0);
+    mOrbitalCamera.Update(timestep);
 }
 
 void GameScene::Render()
 {
-    mRenderer.RenderPlanet(mPlanet, mPlanetShader, mFreeCamera);
+    mRenderer.RenderPlanet(mPlanet, mPlanetShader, mOrbitalCamera);
 }

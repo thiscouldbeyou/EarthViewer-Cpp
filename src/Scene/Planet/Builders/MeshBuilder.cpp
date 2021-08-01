@@ -21,16 +21,16 @@ void PlanetMesh::Unbind()
 
 static void GenerateFaceBuffer(PlanetFaceVertices &verticies)
 {
-    static const auto dTHETA = 90.0f / (VERT_SIDE_LENGTH - 1);
+    static const auto D_THETA = 90.0f / (VERT_SIDE_LENGTH - 1);
     static const auto OFFSET = 45.0f;
     for (Size v = 0; v < VERT_SIDE_LENGTH; v++)
     {
-        const auto vTheta = v * dTHETA - OFFSET;
+        const auto vTheta = v * D_THETA - OFFSET;
         const auto vcos = (float)cos(glm::radians(vTheta));
         const auto vsin = (float)sin(glm::radians(vTheta));
         for (Size u = 0; u < VERT_SIDE_LENGTH; u++)
         {
-            const auto uTheta = u * dTHETA - OFFSET;
+            const auto uTheta = u * D_THETA - OFFSET;
             const auto ucos = (float)cos(glm::radians(uTheta));
             const auto usin = (float)sin(glm::radians(uTheta));
             verticies[v][u] = glm::vec3(usin / ucos, vsin / vcos, 1);
@@ -126,7 +126,8 @@ Ref<PlanetMesh> MeshBuilder::GeneratePlanetVAO() const
 
     glBindVertexArray(0);
 
-    return std::make_shared<PlanetMesh>(vao, sizeof(std::array<PlanetFaceIndicies, 6>) / sizeof(Indice));
+    Size numOfIndices = sizeof(std::array<PlanetFaceIndicies, 6>) / sizeof(Indice);
+    return std::make_shared<PlanetMesh>(vao, numOfIndices);
 }
 
 Ref<PlanetMesh> MeshBuilder::GeneratePlanetMesh() const
