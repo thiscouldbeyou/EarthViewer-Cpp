@@ -10,10 +10,32 @@ auto DisplayManager::HandleEvent(Event &event) -> void
 {
     EventDispatcher dispatcher(event);
     dispatcher.Dispatch<WindowResizeEvent>(
-        [&](WindowResizeEvent &event) -> bool
+        [&](WindowResizeEvent &event)
         {
             printf("Screen Resize Event: [%d, %d]\n", event.mWidth, event.mHeight);
             glViewport(0, 0, event.mWidth, event.mHeight);
+            return false;
+        });
+    dispatcher.Dispatch<KeyEvent>(
+        [&](KeyEvent &event)
+        {
+            const DisplayFlags &df = sDisplay->GetFlags();
+            if (df.mMouseCaptured && event.mKey == GLFW_KEY_RIGHT_CONTROL && event.mAction == GLFW_PRESS)
+            {
+                glfwSetInputMode(sDisplay->GetWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                sDisplay->SetFlags(false);
+            }
+            return false;
+        });
+    dispatcher.Dispatch<MouseButtonEvent>(
+        [&](MouseButtonEvent &event)
+        {
+            const DisplayFlags &df = sDisplay->GetFlags();
+            if (!df.mMouseCaptured && event.mButton == GLFW_MOUSE_BUTTON_LEFT)
+            {
+                glfwSetInputMode(sDisplay->GetWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                sDisplay->SetFlags(true);
+            }
             return false;
         });
     sEventHandler(event);
@@ -41,7 +63,10 @@ auto DisplayManager::MakeDisplay(int width, int height, const std::string &title
 
     AttachCallbacks(window);
 
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
     sDisplay = std::make_shared<Display>(window);
+    sDisplay->SetFlags(true);
     sDisplay->SetVisable(true);
     return sDisplay;
 }
@@ -82,6 +107,11 @@ auto Display::SetSize(int width, int height) -> void
     glfwSetWindowSize(mWindow, width, height);
 }
 
+auto Display::SetFlags(bool mouse_captured) -> void
+{
+    mFlags.mMouseCaptured = mouse_captured;
+}
+
 auto Display::ShouldClose() const -> bool
 {
     return glfwWindowShouldClose(mWindow);
@@ -97,5 +127,5 @@ auto Display::GetSize() const -> DisplaySize
 auto Display::GetAspectRatio() const -> float
 {
     DisplaySize size = GetSize();
-    return (float) size.mWidth / (float) size.mHeight;
+    return (float)size.mWidth / (float)size.mHeight;
 }

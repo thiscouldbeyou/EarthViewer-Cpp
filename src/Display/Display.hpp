@@ -16,10 +16,16 @@ struct DisplaySize
     int mHeight;
 };
 
+struct DisplayFlags
+{
+    bool mMouseCaptured : 1;
+};
+
 class Display
 {
 private:
     GLFWwindow *mWindow{};
+    DisplayFlags mFlags{};
 
 public:
     Display() = default;
@@ -30,12 +36,14 @@ public:
 
     auto SetVisable(bool visibility) -> void;
     auto SetSize(int width, int height) -> void;
+    auto SetFlags(bool mouse_captured) -> void;
 
     auto ShouldClose() const -> bool;
     auto GetSize() const -> DisplaySize;
     auto GetAspectRatio() const -> float;
 
     auto GetWindowHandle() -> GLFWwindow * { return mWindow; };
+    auto GetFlags() const -> const DisplayFlags & { return mFlags;}
 };
 
 class DisplayManager
