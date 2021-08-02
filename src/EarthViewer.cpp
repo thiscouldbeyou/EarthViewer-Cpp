@@ -1,7 +1,7 @@
 #include "EarthViewer.hpp"
 
 EarthViewer::EarthViewer()
-    : mSceneManager(SceneLabel::GAME_SCENE)
+    : mSceneManager(AppScenes::GAME_SCENE)
 {
 }
 

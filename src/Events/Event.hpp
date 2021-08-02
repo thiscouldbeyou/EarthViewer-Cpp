@@ -1,12 +1,12 @@
-#ifndef __EVENT__
-#define __EVENT__
+#ifndef EVENT_HPP
+#define EVENT_HPP
 
 #include <functional>
+#include "Utilities/StringView.hpp"
 
 #define GET_STATIC_EVENT_TYPE(type) \
     static EventTypes GetStaticEventType() { return EventTypes::type; }
 
-using StringView = const char *;
 
 enum class EventTypes
 {

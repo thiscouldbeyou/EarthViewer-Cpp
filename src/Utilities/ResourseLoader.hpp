@@ -1,8 +1,7 @@
-#ifndef __RESOURSE_LOADER__HPP__
-#define __RESOURSE_LOADER__HPP__
+#ifndef RESOURSE_LOADER_HPP
+#define RESOURSE_LOADER_HPP
 
 #include "EVSystem.hpp"
-#include "Resourses/Textures/Texture.hpp"
 
 class GLFWLoader
 {
@@ -25,12 +24,4 @@ private:
 public:
     static auto LoadFile(const std::string &filepath) -> const std::string;
 };
-
-class TextureLoader
-{
-private:
-public:
-    static auto LoadTexture(const std::string &filepath) -> Ref<Texture2D>;
-};
-
 #endif

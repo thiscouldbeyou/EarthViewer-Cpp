@@ -56,8 +56,8 @@ void MeshBuilder::GenerateVertexPositions() const
     {
         glm::mat4 transform = TRANSFORM_LOOKUPS[f];
         auto &verticies = mVerticies->data()[f];
-        for (auto v = 0; v < verticies.size(); v++)
-            for (auto u = 0; u < verticies[v].size(); u++)
+        for (auto v = 0ull; v < (Size)verticies.size(); v++)
+            for (auto u = 0ull; u < (Size)verticies[v].size(); u++)
             {
                 const auto &point = buffer[v][u];
                 const auto trans = transform * glm::vec4(point, 1);
@@ -73,9 +73,9 @@ void MeshBuilder::GenerateVertexIndicies() const
     for (auto f = 0; f < 6; f++)
     {
         auto &faces = mFaces->data()[f];
-        for (auto v = 0; v < faces.size(); v++)
+        for (auto v = 0ull; v < (Size)faces.size(); v++)
         {
-            for (auto u = 0; u < faces[v].size(); u++)
+            for (auto u = 0ull; u < (Size)faces[v].size(); u++)
             {
                 const auto index = v * VERT_SIDE_LENGTH + u;
                 const auto offset = STRIDE * f;

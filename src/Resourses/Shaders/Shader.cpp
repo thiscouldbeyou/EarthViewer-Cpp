@@ -81,7 +81,7 @@ auto Shader::Stop() const -> void
 
 auto Shader::GetUniformLocation(const std::string &name) const -> ShaderUniformLocation
 {
-    glGetUniformLocation(mProgramHandle, name.c_str());
+    return glGetUniformLocation(mProgramHandle, name.c_str());
 }
 
 auto Shader::LoadInt(ShaderUniformLocation loc, int value) const -> void

@@ -1,6 +1,7 @@
 #include <cstdio>
 
 #include "EarthViewer.hpp"
+#include "Resourses/Textures/Texture.hpp"
 
 /*
 	- Maintence
@@ -17,6 +18,8 @@ auto main() -> int
 
 	GLEWLoader::Initialize();
 	GLEWLoader::SetPatchVertices(4);
+
+	TextureManager::Initialize();
 
 	EarthViewer game;
 	DisplayManager::SetEventHandler([&game](Event &event) -> void {

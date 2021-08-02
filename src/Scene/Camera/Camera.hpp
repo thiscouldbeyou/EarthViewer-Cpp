@@ -1,5 +1,5 @@
-#ifndef __CAMERA__HPP__
-#define __CAMERA__HPP__
+#ifndef CAMERA_HPP
+#define CAMERA_HPP
 
 struct CameraSettings
 {

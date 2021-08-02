@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+# Settings
+.vscode/
+
+# Depends
+dep/
+
+# Build Related
+bin/
+build/
+.release_time

@@ -1,9 +1,9 @@
-#ifndef __SCENE_MANAGER__
-#define __SCENE_MANAGER__
+#ifndef SCENE_MANAGER_HPP
+#define SCENE_MANAGER_HPP
 
 #include "Scenes/GameScene/GameScene.hpp"
 
-enum class SceneLabel
+enum class AppScenes
 {
     NONE,
     MAIN_SCENE,
@@ -15,17 +15,17 @@ class SceneManager
 {
 private:
     std::vector<Scene *> mScenes{};
-    SceneLabel mCurrentScene{};
+    AppScenes mCurrentScene{};
 
 public:
     SceneManager() = default;
-    SceneManager(SceneLabel);
+    SceneManager(AppScenes scene);
     ~SceneManager();
 
-    auto SetScene(SceneLabel) -> void;
+    auto SetScene(AppScenes scene) -> void;
 
-    auto HandleEvent(Event &) -> void;
-    auto Update(Timestep) -> void;
+    auto HandleEvent(Event & event) -> void;
+    auto Update(Timestep timestep) -> void;
     auto Render() -> void;
 };
 

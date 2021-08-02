@@ -46,7 +46,7 @@ auto DisplayManager::MakeDisplay(int width, int height, const std::string &title
     return sDisplay;
 }
 
-auto DisplayManager::GetDisplay(int id) -> Display &
+auto DisplayManager::GetDisplay(int) -> Display &
 {
     return *sDisplay.get();
 }

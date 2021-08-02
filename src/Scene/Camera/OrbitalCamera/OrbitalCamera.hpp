@@ -1,5 +1,5 @@
-#ifndef __ORBITAL_CAMERA__HPP__
-#define __ORBITAL_CAMERA__HPP__
+#ifndef ORBITAL_CAMERA_HPP
+#define ORBITAL_CAMERA_HPP
 
 #include <glm/glm.hpp>
 #include "EVSystem.hpp"

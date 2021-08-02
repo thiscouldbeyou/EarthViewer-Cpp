@@ -1,5 +1,5 @@
-#ifndef __PLANET_SHADER__
-#define __PLANET_SHADER__
+#ifndef PLANET_SHADER_HPP
+#define PLANET_SHADER_HPP
 
 #include "Resourses/Shaders/Shader.hpp"
 

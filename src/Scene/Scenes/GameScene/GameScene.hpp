@@ -1,5 +1,5 @@
-#ifndef __GAME_SCENE__
-#define __GAME_SCENE__
+#ifndef GAME_SCENE_HPP
+#define GAME_SCENE_HPP
 
 #include "Render/Renderer.hpp"
 #include "Scene/Scenes/Scene.hpp"
@@ -24,8 +24,8 @@ public:
     virtual auto Attach() -> void override;
     virtual auto Detach() -> void override;
 
-    virtual auto HandleEvent(Event &) -> void override;
-    virtual auto Update(Timestep) -> void override;
+    virtual auto HandleEvent(Event &event) -> void override;
+    virtual auto Update(Timestep timestep) -> void override;
     virtual auto Render() -> void override;
 };
 

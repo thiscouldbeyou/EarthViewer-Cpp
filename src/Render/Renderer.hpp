@@ -1,5 +1,5 @@
-#ifndef __RENDERER__
-#define __RENDERER__
+#ifndef RENDERER_HPP
+#define RENDERER_HPP
 
 #include "EVSystem.hpp"
 #include "Scene/Planet/Planet.hpp"
@@ -10,7 +10,7 @@ class Renderer
 {
 private:
 public:
-    auto RenderPlanet(Planet &, Ref<PlanetShader>, OrbitalCamera &) -> void;
+    auto RenderPlanet(Planet &planet, Ref<PlanetShader> shader, OrbitalCamera &camera) -> void;
     auto RenderSkybox() -> void;
     auto RenderUI() -> void;
 };

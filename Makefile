@@ -7,6 +7,8 @@ CC ?= clang
 SRC_EXT = cpp
 # Path to the source directory, relative to the makefile
 SRC_PATH = src
+# For dependancies
+DEP_PATH = dep
 # Space-separated pkg-config libraries used by this project
 LIBS =
 # General compiler flags
@@ -16,7 +18,7 @@ RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
 DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
-INCLUDES = -I $(SRC_PATH)
+INCLUDES = -I $(SRC_PATH) -I $(DEP_PATH)
 # General linker settings
 LINK_FLAGS = -lstdc++ -lm -lglut -lGL -lGLEW -lglfw
 # Additional release-specific linker settings

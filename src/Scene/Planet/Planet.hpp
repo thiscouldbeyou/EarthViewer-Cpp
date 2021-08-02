@@ -1,5 +1,5 @@
-#ifndef __PLANET__HPP__
-#define __PLANET__HPP__
+#ifndef PLANET_HPP
+#define PLANET_HPP
 
 #include "Builders/MeshBuilder.hpp"
 #include "Resourses/Shaders/Implimentations/PlanetShader.hpp"

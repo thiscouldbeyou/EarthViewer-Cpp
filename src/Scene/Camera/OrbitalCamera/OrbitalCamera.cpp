@@ -72,6 +72,8 @@ auto OrbitalCamera::ChangeAcceleration(float d_altitude,
     sp.mAltitude += d_altitude;
     sp.mTheta += d_theta;
     sp.mPhi += d_phi;
+
+    return sp;
 }
 
 auto OrbitalCamera::ChangePhysicalAcceleration(float d_altitude_force,
@@ -83,6 +85,8 @@ auto OrbitalCamera::ChangePhysicalAcceleration(float d_altitude_force,
     sp.mAltitude += d_altitude_force / mPhysics.mMass;
     sp.mTheta += d_theta_force / mPhysics.mMass;
     sp.mPhi += d_phi_force / mPhysics.mMass;
+
+    return sp;
 }
 
 auto OrbitalCamera::ChangeVelocity(float d_altitude,
@@ -94,6 +98,8 @@ auto OrbitalCamera::ChangeVelocity(float d_altitude,
     sp.mAltitude += d_altitude;
     sp.mTheta += d_theta;
     sp.mPhi += d_phi;
+
+    return sp;
 }
 
 auto OrbitalCamera::SetAcceleration(float altitude,
@@ -105,6 +111,8 @@ auto OrbitalCamera::SetAcceleration(float altitude,
     sp.mAltitude = altitude;
     sp.mTheta = theta;
     sp.mPhi = phi;
+
+    return sp;
 }
 
 auto OrbitalCamera::SetPhysicalAcceleration(float altitude_force,
@@ -116,6 +124,8 @@ auto OrbitalCamera::SetPhysicalAcceleration(float altitude_force,
     sp.mAltitude = altitude_force / mPhysics.mMass;
     sp.mTheta = theta_force / mPhysics.mMass;
     sp.mPhi = phi_force / mPhysics.mMass;
+
+    return sp;
 }
 
 auto OrbitalCamera::SetVelocity(float altitude,
@@ -128,6 +138,7 @@ auto OrbitalCamera::SetVelocity(float altitude,
     sp.mAltitude = altitude;
     sp.mTheta = theta;
     sp.mPhi = phi;
+    return sp;
 }
 
 auto OrbitalCamera::Move(float du,
@@ -199,6 +210,7 @@ auto OrbitalCamera::SetCameraSettings(float fov,
     mSettings.mAspect = aspect;
     mSettings.mNear = near;
     mSettings.mFar = far;
+    return mSettings;
 }
 
 auto OrbitalCamera::UpdateViewMatrix(const glm::vec3 &target) -> glm::mat4 &

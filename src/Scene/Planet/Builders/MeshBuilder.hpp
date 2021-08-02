@@ -1,5 +1,5 @@
-#ifndef __MESH_BUILDER__HPP__
-#define __MESH_BUILDER__HPP__
+#ifndef MESH_BUILDER_HPP
+#define MESH_BUILDER_HPP
 
 #include <array>
 #include <cstdint>

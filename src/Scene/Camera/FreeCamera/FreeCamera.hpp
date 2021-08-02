@@ -1,8 +1,8 @@
-#ifndef __FREE_CAMERA__HPP__
-#define __FREE_CAMERA__HPP__
+#ifndef FREE_CAMERA_HPP
+#define FREE_CAMERA_HPP
 
 #include <glm/glm.hpp>
-#include "../Camera.hpp"
+#include "Scene/Camera/Camera.hpp"
 
 class FreeCamera : public Camera
 {

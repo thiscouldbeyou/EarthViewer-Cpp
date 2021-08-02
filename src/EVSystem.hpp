@@ -1,5 +1,5 @@
-#ifndef __EVSYSTEM__
-#define __EVSYSTEM__
+#ifndef EVSYSTEM_HPP
+#define EVSYSTEM_HPP
 
 #include <cassert>
 #include <cstdio>
@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+
+#include "Utilities/StringView.hpp"
 
 using Timestep = float;
 

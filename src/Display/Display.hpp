@@ -1,5 +1,5 @@
-#ifndef __DISPlAY__
-#define __DISPlAY__
+#ifndef DISPlAY_HPP
+#define DISPlAY_HPP
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -28,8 +28,8 @@ public:
     auto Clear() -> void;
     auto Update() -> void;
 
-    auto SetVisable(bool) -> void;
-    auto SetSize(int, int) -> void;
+    auto SetVisable(bool visibility) -> void;
+    auto SetSize(int width, int height) -> void;
 
     auto ShouldClose() const -> bool;
     auto GetSize() const -> DisplaySize;
@@ -65,9 +65,9 @@ private:
     static auto HandleEvent(Event &) -> void;
 
 public:
-    static auto MakeDisplay(int, int, const std::string &) -> Ref<Display>;
-    static auto GetDisplay(int = 0) -> Display &;
-    static auto SetEventHandler(EventHandlerFn) -> void;
+    static auto MakeDisplay(int width, int height, const std::string &title) -> Ref<Display>;
+    static auto GetDisplay(int id = 0) -> Display &;
+    static auto SetEventHandler(EventHandlerFn func) -> void;
 };
 
 #endif

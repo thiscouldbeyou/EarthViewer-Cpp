@@ -1,5 +1,5 @@
-#ifndef __EARTH_VIEWER__HPP__
-#define __EARTH_VIEWER__HPP__
+#ifndef EARTH_VIEWER_HPP
+#define EARTH_VIEWER_HPP
 
 #include "EVSystem.hpp"
 #include "Display/Display.hpp"
@@ -15,8 +15,8 @@ public:
     EarthViewer();
     ~EarthViewer();
 
-    auto HandleEvent(Event &) -> void;
-    auto Update(Timestep) -> void;
+    auto HandleEvent(Event &event) -> void;
+    auto Update(Timestep timestep) -> void;
     auto Render() -> void;
 };
 
