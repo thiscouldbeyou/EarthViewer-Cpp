@@ -4,21 +4,6 @@
 #include <GL/glew.h>
 #include "Utilities/GeneralMath.hpp"
 
-PlanetMesh::~PlanetMesh()
-{
-    glDeleteVertexArrays(1, &mHandle);
-}
-
-void PlanetMesh::Bind()
-{
-    glBindVertexArray(mHandle);
-}
-
-void PlanetMesh::Unbind()
-{
-    glBindVertexArray(0);
-}
-
 static void GenerateFaceBuffer(PlanetFaceVertices &verticies)
 {
     static const auto D_THETA = 90.0f / (VERT_SIDE_LENGTH - 1);
@@ -30,10 +15,12 @@ static void GenerateFaceBuffer(PlanetFaceVertices &verticies)
         const auto vsin = (float)sin(glm::radians(vTheta));
         for (Size u = 0; u < VERT_SIDE_LENGTH; u++)
         {
+            static const float rVERT_SIDE_LENGTH_M1 = 1.0f / (VERT_SIDE_LENGTH - 1);
             const auto uTheta = u * D_THETA - OFFSET;
             const auto ucos = (float)cos(glm::radians(uTheta));
             const auto usin = (float)sin(glm::radians(uTheta));
-            verticies[v][u] = glm::vec3(usin / ucos, vsin / vcos, 1);
+            verticies[v][u].mPositions = glm::vec3(usin / ucos, vsin / vcos, 1);
+            verticies[v][u].mTextureCoords = glm::vec2(u * rVERT_SIDE_LENGTH_M1, v * rVERT_SIDE_LENGTH_M1);
         }
     }
 }
@@ -60,8 +47,9 @@ void MeshBuilder::GenerateVertexPositions() const
             for (auto u = 0ull; u < (Size)verticies[v].size(); u++)
             {
                 const auto &point = buffer[v][u];
-                const auto trans = transform * glm::vec4(point, 1);
-                verticies[v][u] = glm::vec3(trans.x, trans.y, trans.z);
+                const auto trans = transform * glm::vec4(point.mPositions, 1);
+                verticies[v][u].mPositions = glm::vec3(trans.x, trans.y, trans.z);
+                verticies[v][u].mTextureCoords = point.mTextureCoords;
             }
     }
 }
@@ -114,7 +102,8 @@ Ref<PlanetMesh> MeshBuilder::GeneratePlanetVAO() const
                  sizeof(std::array<PlanetFaceVertices, 6>),
                  verticies,
                  GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void *)offsetof(VertexData, mPositions));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void *)offsetof(VertexData, mTextureCoords));
 
     VertexBufferObjectHandle vertexIndiciesBuffer;
     glGenBuffers(1, &vertexIndiciesBuffer);

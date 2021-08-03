@@ -5,14 +5,16 @@
 #include <cstdint>
 #include <glm/glm.hpp>
 
-#include "EVSystem.hpp"
+#include "Mesh/Mesh.hpp"
 
 #define FACE_SIDE_LENGTH 32
 #define VERT_SIDE_LENGTH (FACE_SIDE_LENGTH + 1)
 
-using VertexArrayObjectHandle = unsigned int;
-using VertexBufferObjectHandle = unsigned int;
-using Indice = uint32_t;
+struct VertexData
+{
+    glm::vec3 mPositions{};
+    glm::vec2 mTextureCoords{};
+};
 
 struct PlanetFace
 {
@@ -24,26 +26,19 @@ struct PlanetFace
         : i00(p0), i01(p1), i02(p2), i03(p3)
     {
     }
-    
 };
 
-using PlanetFaceVertices = std::array<std::array<glm::vec3, VERT_SIDE_LENGTH>, VERT_SIDE_LENGTH>;
+using PlanetFaceVertices = std::array<std::array<VertexData, VERT_SIDE_LENGTH>, VERT_SIDE_LENGTH>;
 using PlanetFaceIndicies = std::array<std::array<PlanetFace, FACE_SIDE_LENGTH>, FACE_SIDE_LENGTH>;
 
-struct PlanetMesh
+class PlanetMesh : public Mesh
 {
-    VertexArrayObjectHandle mHandle{};
-    Size mLength{};
-
+private:
+public:
     PlanetMesh(VertexArrayObjectHandle handle, Size length)
-        : mHandle(handle),
-          mLength(length)
+        : Mesh(handle, length)
     {
     }
-    ~PlanetMesh();
-
-    void Bind();
-    void Unbind();
 };
 
 class MeshBuilder

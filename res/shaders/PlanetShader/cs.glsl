@@ -3,8 +3,10 @@
 layout (vertices = 4) out;
 
 in vec3 vWorldPosition_CS_in[];
+in vec2 vTextureCoords_CS_in[];
 
 out vec3 vWorldPosition_ES_in[];
+out vec2 vTextureCoords_ES_in[];
 
 uniform vec3 uCameraPosition = vec3(0,1.5,0);
 
@@ -26,6 +28,7 @@ float GetInnerTess(float src) {
 void main() {
     vec3 npos = normalize(vWorldPosition_CS_in[gl_InvocationID]);
     vWorldPosition_ES_in[gl_InvocationID] = npos;
+    vTextureCoords_ES_in[gl_InvocationID] = vTextureCoords_CS_in[gl_InvocationID];
 
     if(dot(npos, normalize(uCameraPosition)) < 0.0) {
        gl_TessLevelOuter[0] = 0;

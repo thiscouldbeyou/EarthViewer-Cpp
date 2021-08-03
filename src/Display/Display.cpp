@@ -19,21 +19,26 @@ auto DisplayManager::HandleEvent(Event &event) -> void
     dispatcher.Dispatch<KeyEvent>(
         [&](KeyEvent &event)
         {
-            const DisplayFlags &df = sDisplay->GetFlags();
+            const auto window = sDisplay->GetWindowHandle();
+            const auto &df = sDisplay->GetFlags();
             if (df.mMouseCaptured && event.mKey == GLFW_KEY_RIGHT_CONTROL && event.mAction == GLFW_PRESS)
             {
-                glfwSetInputMode(sDisplay->GetWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
                 sDisplay->SetFlags(false);
             }
+
+            if (event.mKey == GLFW_KEY_ESCAPE)
+                glfwSetWindowShouldClose(window, true);
             return false;
         });
     dispatcher.Dispatch<MouseButtonEvent>(
         [&](MouseButtonEvent &event)
         {
+            const auto window = sDisplay->GetWindowHandle();
             const DisplayFlags &df = sDisplay->GetFlags();
             if (!df.mMouseCaptured && event.mButton == GLFW_MOUSE_BUTTON_LEFT)
             {
-                glfwSetInputMode(sDisplay->GetWindowHandle(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
                 sDisplay->SetFlags(true);
             }
             return false;
@@ -64,6 +69,7 @@ auto DisplayManager::MakeDisplay(int width, int height, const std::string &title
     AttachCallbacks(window);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_STICKY_MOUSE_BUTTONS, GLFW_TRUE);
 
     sDisplay = std::make_shared<Display>(window);
     sDisplay->SetFlags(true);

@@ -22,6 +22,7 @@ protected:
 
 public:
     Shader(ShaderProgramHandle);
+    virtual ~Shader();
 
     auto Start() const -> void;
     auto Stop() const -> void;

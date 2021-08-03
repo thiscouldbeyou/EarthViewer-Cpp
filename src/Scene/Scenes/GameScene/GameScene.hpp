@@ -4,18 +4,19 @@
 #include "Render/Renderer.hpp"
 #include "Scene/Scenes/Scene.hpp"
 #include "Scene/Planet/Planet.hpp"
+#include "Scene/Space/Skybox.hpp"
 #include "Scene/Camera/OrbitalCamera/OrbitalCamera.hpp"
 
 class GameScene : public Scene
 {
 private:
-    Renderer mRenderer;
-
-    Planet mPlanet;
+    Skybox mSkybox{};
+    Planet mPlanet{};
     //FreeCamera mFreeCamera;
-    OrbitalCamera mOrbitalCamera;
+    OrbitalCamera mOrbitalCamera{};
 
-    Ref<PlanetShader> mPlanetShader;
+    Ref<SkyboxShader> mSkyboxShader{};
+    Ref<PlanetShader> mPlanetShader{};
 
 public:
     GameScene();

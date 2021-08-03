@@ -3,8 +3,9 @@
 #include "Display/Display.hpp"
 
 GameScene::GameScene()
-    : mPlanet(),
+    : mSkybox(), mPlanet(),
       mOrbitalCamera(0, 0, 2, 120, DisplayManager::GetDisplay().GetAspectRatio(), 0.01, 100),
+      mSkyboxShader(std::make_shared<SkyboxShader>()),
       mPlanetShader(std::make_shared<PlanetShader>())
 {
 }
@@ -57,5 +58,8 @@ void GameScene::Update(Timestep timestep)
 
 void GameScene::Render()
 {
-    mRenderer.RenderPlanet(mPlanet, mPlanetShader, mOrbitalCamera);
+    mOrbitalCamera.UpdateViewMatrix();
+    //mOrbitalCamera.UpdateProjMatrix();
+    Renderer::RenderPlanet(mPlanet, mPlanetShader, mOrbitalCamera);
+    Renderer::RenderSkybox(mSkybox, mSkyboxShader, mOrbitalCamera);
 }

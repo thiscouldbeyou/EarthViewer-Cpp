@@ -13,6 +13,10 @@ auto PlanetShader::LoadShaderProgram(const std::string &filename) const -> Shade
     glAttachShader(program, cs);
     glAttachShader(program, es);
     glAttachShader(program, fs);
+
+    glBindAttribLocation(program, 0, "aPosition_VS_in");
+    glBindAttribLocation(program, 1, "aTextureCoords_VS_in");
+
     glLinkProgram(program);
 
     ValidateShaderProgram(program);
@@ -33,6 +37,7 @@ auto PlanetShader::LoadShaderProgram(const std::string &filename) const -> Shade
 PlanetShader::PlanetShader()
     : Shader(LoadShaderProgram("PlanetShader"))
 {
+
     mModelLoc = GetUniformLocation("uModelMatrix");
     mViewLoc = GetUniformLocation("uViewMatrix");
     mProjLoc = GetUniformLocation("uProjMatrix");
@@ -40,5 +45,7 @@ PlanetShader::PlanetShader()
     mReverseModelLoc = GetUniformLocation("uReverse_ModelMatrix");
 
     mCameraPositionLoc = GetUniformLocation("uCameraPosition");
+
+    mAlbetoSamplerLoc = GetUniformLocation("mAlbetoSampler");
     //mPlanetLoc = GetUniformLocation("uPlanetPosition");
 }

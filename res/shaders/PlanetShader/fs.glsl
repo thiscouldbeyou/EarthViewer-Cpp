@@ -3,10 +3,13 @@
 in vec3 vNormalizedCoord_FS_in;
 in vec3 vWorldNormalizedCoord_FS_in;
 in vec3 vWorldTransformedCoord_FS_in;
+in vec2 vTextureCoords_FS_in;
 
 out vec4 FragColor;
 
 uniform vec3 uSunDirection = vec3(0, 0, -1);
+
+uniform sampler2D mAlbetoSampler;
 
 float hash( float n )
 {
@@ -40,7 +43,7 @@ float Noise3FMB(vec3 pos) {
         float scale = pow(2, o);
         float weight = 1 / scale;
         accum += weight;
-        s += weight * Noise3Value(pos * 10 * scale);
+        s += weight * Noise3Value(pos * 25 * scale);
     }
     return s / accum;
 }
@@ -76,6 +79,6 @@ void main() {
     fact = clamp(fact, 0.1, 1);
 
     //vec3 shading = GenerateTextureCoords(uBumpSampler2, vWorldTransformedCoord_FS_in, 1).xyz;
-    float s = Noise3FMB(vNormalizedCoord_FS_in);
-    FragColor = fact * vec4(vec3(s), 1) * vec4(0.2, 0.7, 0.4, 1);
+    //float s = Noise3FMB(vNormalizedCoord_FS_in);
+    FragColor = fact * texture(mAlbetoSampler, vTextureCoords_FS_in * 4) * vec4(0.2, 0.7, 0.4, 1);
 }

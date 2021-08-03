@@ -47,6 +47,7 @@ private:
     glm::mat4 mProjMatrix{};
 
 public:
+    OrbitalCamera() = default;
     OrbitalCamera(float, float, float,
                   float = 70, float = 1, float = 0.01, float = 1000);
 

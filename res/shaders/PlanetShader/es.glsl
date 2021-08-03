@@ -7,10 +7,12 @@ uniform mat4 uViewMatrix = mat4(1.0);
 uniform mat4 uProjMatrix = mat4(1.0);
 
 in vec3 vWorldPosition_ES_in[];
+in vec2 vTextureCoords_ES_in[];
 
 out vec3 vNormalizedCoord_FS_in;
 out vec3 vWorldNormalizedCoord_FS_in;
 out vec3 vWorldTransformedCoord_FS_in;
+out vec2 vTextureCoords_FS_in;
 
 float hash( float n )
 {
@@ -44,7 +46,7 @@ float Noise3FMB(vec3 pos) {
         float scale = pow(2, o);
         float weight = 1 / scale;
         accum += weight;
-        s += weight * Noise3Value(pos * 10 * scale);
+        s += weight * Noise3Value(pos * 25 * scale);
     }
     return s / accum;
 }
@@ -68,9 +70,13 @@ vec4 GenerateTextureCoords(sampler2D samp, vec3 pos, float scale) {
     return vec4(tex.xyz, 1);
 }
 
-vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2)
+vec2 interpolate2D(vec2 v0, vec2 v1, vec2 v2, vec2 v3)
 {
-    return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2;
+    vec2 p0 = mix(v0, v3, gl_TessCoord.x);
+    vec2 p1 = mix(v1, v2, gl_TessCoord.x);
+    vec2 p2 = mix(p0, p1, gl_TessCoord.y);
+    return p2;
+    //return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2;
 }
 
 vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2, vec3 v3)
@@ -83,15 +89,21 @@ vec3 interpolate3D(vec3 v0, vec3 v1, vec3 v2, vec3 v3)
     //return vec3(gl_TessCoord.x) * v0 + vec3(gl_TessCoord.y) * v1 + vec3(gl_TessCoord.z) * v2;
 }
 
-#define USE_TRANSFORM true
+#define USE_TRANSFORM false
 
 void main() {
     vec3 pos = interpolate3D(vWorldPosition_ES_in[0],
-                                vWorldPosition_ES_in[1],
-                                vWorldPosition_ES_in[2], 
-                                vWorldPosition_ES_in[3]);
-    //pos = normalize(pos);
+                            vWorldPosition_ES_in[1],
+                            vWorldPosition_ES_in[2], 
+                            vWorldPosition_ES_in[3]);
+
+    vec2 tc = interpolate2D(vTextureCoords_ES_in[0], 
+                            vTextureCoords_ES_in[1], 
+                            vTextureCoords_ES_in[2], 
+                            vTextureCoords_ES_in[3]);
+                                    
     vWorldNormalizedCoord_FS_in = pos;
+    vTextureCoords_FS_in = tc;
 
     vec3 orginal_pos = (uReverse_ModelMatrix * vec4(pos, 1)).xyz;
     float scale = Noise3FMB(orginal_pos) * 0.1 + 0.9;

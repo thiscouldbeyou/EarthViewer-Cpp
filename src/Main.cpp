@@ -5,7 +5,7 @@
 
 /*
 	- Maintence
-	- Textures
+	- Asset Manager
 	- Frame Buffers
 	- Normals
 	- Skybox
@@ -18,6 +18,8 @@ auto main() -> int
 
 	GLEWLoader::Initialize();
 	GLEWLoader::SetPatchVertices(4);
+
+	Renderer::RenderStartupScreen();
 
 	TextureManager::Initialize();
 

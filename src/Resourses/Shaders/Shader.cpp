@@ -69,6 +69,11 @@ Shader::Shader(ShaderProgramHandle handle)
 {
 }
 
+ Shader::~Shader()
+{
+    glDeleteProgram(mProgramHandle);
+}
+
 auto Shader::Start() const -> void
 {
     glUseProgram(mProgramHandle);
