@@ -20,7 +20,7 @@ DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
 INCLUDES = -I $(SRC_PATH) -I $(DEP_PATH)
 # General linker settings
-LINK_FLAGS = -lstdc++ -lm -lglut -lGL -lGLEW -lglfw
+LINK_FLAGS = -fno-elide-constructors -lstdc++ -lm -lglut -lGL -lGLEW -lglfw
 # Additional release-specific linker settings
 RLINK_FLAGS = -flto
 # Additional debug-specific linker settings

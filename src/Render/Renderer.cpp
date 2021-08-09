@@ -1,73 +1,70 @@
 #include "Renderer.hpp"
 
-#include "Resourses/Textures/Texture.hpp"
+#include <GL/glew.h>
 
-auto Renderer::RenderPlanet(Planet &planet, Ref<PlanetShader> shader, OrbitalCamera &camera) -> void
+auto Renderer::RenderPlanet(Planet &planet, OrbitalCamera &camera) -> void
 {
-    auto mesh = planet.GetMesh();
+    auto &mesh = AssetManager::GetMesh(AppMesh::PLANET);
+    auto &shader = AssetManager::GetShader(AppShader::PLANET);
+    auto &texture = AssetManager::GetTexture(AppTexture::DEMO);
 
-    // Setup flags
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    mesh->Bind();
-    shader->Start();
+    mesh.Bind();
+    shader.Bind();
 
     glm::mat4 model = planet.GenerateModelMatrix();
-    shader->LoadMatrix4(shader->mModelLoc, model);
-    shader->LoadMatrix4(shader->mViewLoc, camera.GetViewMatrix());
-    shader->LoadMatrix4(shader->mProjLoc, camera.GetProjMatrix());
-    shader->LoadMatrix4(shader->mReverseModelLoc, glm::inverse(model));
-    shader->LoadFloat3(shader->mCameraPositionLoc, camera.GenerateCartesianPosition());
-    shader->LoadInt(shader->mAlbetoSamplerLoc, 0);
+    shader.LoadMatrix4("uModelMatrix", model);
+    shader.LoadMatrix4("uViewMatrix", camera.GetViewMatrix());
+    shader.LoadMatrix4("uProjMatrix", camera.GetProjMatrix());
+    shader.LoadMatrix4("uReverse_ModelMatrix", glm::inverse(model));
+    shader.LoadFloat3("uCameraPosition", camera.GenerateCartesianPosition());
+    shader.LoadInt("mAlbetoSampler", 0);
 
-    glActiveTexture(GL_TEXTURE0);
-    auto texture = TextureManager::GetTexture(AppTextures2D::STONE_TEXTURE);
-    glBindTexture(GL_TEXTURE_2D, texture->GetTextureHandle());
+    texture.Bind(0);
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
+    //printf("ID: %d, Length %d\n", mesh.GetVertexArrayHandle(), mesh.GetLength());
+
     glPointSize(12);
     glPolygonMode(GL_FRONT_AND_BACK, GL_QUADS);
-    glDrawElements(GL_PATCHES, mesh->GetLength(), GL_UNSIGNED_INT, NULL);
+    glDrawElements(GL_PATCHES, mesh.GetLength(), GL_UNSIGNED_INT, NULL);
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
 
-    shader->Stop();
-    mesh->Unbind();
+    shader.Unbind();
+    mesh.Unbind();
 }
 
-auto Renderer::RenderSkybox(Skybox &skybox, Ref<SkyboxShader> shader, OrbitalCamera &camera) -> void
+auto Renderer::RenderSkybox(Skybox &skybox, OrbitalCamera &camera) -> void
 {
-    auto mesh = skybox.GetMesh();
+    auto &mesh = AssetManager::GetMesh(AppMesh::SKYBOX);
+    auto &shader = AssetManager::GetShader(AppShader::SKYBOX);
+    auto &texture = AssetManager::GetTexture(AppTexture::SKYBOX);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    shader->Start();
-    mesh->Bind();
+    shader.Bind();
+    mesh.Bind();
 
-    //const glm::mat4 model = skybox.GenerateModelMatrix();
-    //shader->LoadMatrix4(shader->mModelLoc, model);
     glm::mat4 view_without_translation = glm::mat4(glm::mat3(camera.GetViewMatrix()));
-    shader->LoadMatrix4(shader->mViewLoc, view_without_translation);
-    shader->LoadMatrix4(shader->mProjLoc, camera.GetProjMatrix());
-    shader->LoadInt(shader->mAlbetoSamplerLoc, 0);
+    shader.LoadMatrix4("uViewMatrix", view_without_translation);
+    shader.LoadMatrix4("uProjMatrix", camera.GetProjMatrix());
+    shader.LoadInt("mAlbetoSampler", 0);
 
-    glActiveTexture(GL_TEXTURE0);
-    auto texture = TextureManager::GetTexture(AppTexturesCubemap::GALAXY_CUBEMAP);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, texture->GetTextureHandle());
+    texture.Bind(0);
 
     glEnableVertexAttribArray(0);
-
-    glDrawArrays(GL_TRIANGLES, 0, mesh->GetLength());
-
+    glDrawArrays(GL_TRIANGLES, 0, mesh.GetLength());
     glDisableVertexAttribArray(0);
 
-    shader->Stop();
-    mesh->Unbind();
+    shader.Unbind();
+    mesh.Unbind();
 }
 
 auto Renderer::RenderUI() -> void

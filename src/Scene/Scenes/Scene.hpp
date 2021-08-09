@@ -1,15 +1,15 @@
 #ifndef SCENE_HPP
 #define SCENE_HPP
 
-#include "EVSystem.hpp"
+#include "PDH.hpp"
 #include "Events/Event.hpp"
 
-class Scene
+class BasicScene
 {
 private:
 public:
-    Scene() = default;
-    virtual ~Scene(){}
+    BasicScene() = default;
+    virtual ~BasicScene(){}
 
     virtual auto Attach() -> void = 0;
     virtual auto Detach() -> void = 0;

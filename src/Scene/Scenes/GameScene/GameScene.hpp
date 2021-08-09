@@ -3,20 +3,16 @@
 
 #include "Render/Renderer.hpp"
 #include "Scene/Scenes/Scene.hpp"
-#include "Scene/Planet/Planet.hpp"
-#include "Scene/Space/Skybox.hpp"
-#include "Scene/Camera/OrbitalCamera/OrbitalCamera.hpp"
+#include "Scene/Environment/Planet/Planet.hpp"
+#include "Scene/Environment/Space/Skybox.hpp"
+#include "Scene/Environment/Camera/OrbitalCamera/OrbitalCamera.hpp"
 
-class GameScene : public Scene
+class GameScene : public BasicScene
 {
 private:
     Skybox mSkybox{};
     Planet mPlanet{};
-    //FreeCamera mFreeCamera;
     OrbitalCamera mOrbitalCamera{};
-
-    Ref<SkyboxShader> mSkyboxShader{};
-    Ref<PlanetShader> mPlanetShader{};
 
 public:
     GameScene();

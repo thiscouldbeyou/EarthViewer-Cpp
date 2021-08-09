@@ -4,9 +4,7 @@
 
 GameScene::GameScene()
     : mSkybox(), mPlanet(),
-      mOrbitalCamera(0, 0, 2, 120, DisplayManager::GetDisplay().GetAspectRatio(), 0.01, 100),
-      mSkyboxShader(std::make_shared<SkyboxShader>()),
-      mPlanetShader(std::make_shared<PlanetShader>())
+      mOrbitalCamera(0, 0, 2, 120, DisplayManager::GetDisplay().GetAspectRatio(), 0.01, 100)
 {
 }
 
@@ -60,6 +58,6 @@ void GameScene::Render()
 {
     mOrbitalCamera.UpdateViewMatrix();
     //mOrbitalCamera.UpdateProjMatrix();
-    Renderer::RenderPlanet(mPlanet, mPlanetShader, mOrbitalCamera);
-    Renderer::RenderSkybox(mSkybox, mSkyboxShader, mOrbitalCamera);
+    Renderer::RenderPlanet(mPlanet, mOrbitalCamera);
+    Renderer::RenderSkybox(mSkybox, mOrbitalCamera);
 }

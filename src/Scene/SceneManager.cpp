@@ -7,14 +7,11 @@ SceneManager::SceneManager(AppScenes initial)
     mScenes.reserve((Size)AppScenes::MAX_SCENE_COUNT);
     mScenes.push_back(nullptr);
     mScenes.push_back(nullptr /*Start Menu*/);
-    mScenes.push_back(new GameScene());
+    mScenes.emplace_back(new GameScene());
 }
 
 SceneManager::~SceneManager()
 {
-    for (auto scene : mScenes)
-        if (scene)
-            delete scene;
 }
 
 auto SceneManager::SetScene(AppScenes scene) -> void

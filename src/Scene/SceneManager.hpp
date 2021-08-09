@@ -14,7 +14,7 @@ enum class AppScenes
 class SceneManager
 {
 private:
-    std::vector<Scene *> mScenes{};
+    std::vector<Ref<BasicScene>> mScenes{};
     AppScenes mCurrentScene{};
 
 public:
